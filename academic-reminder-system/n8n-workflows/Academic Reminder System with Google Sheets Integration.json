@@ -1,0 +1,435 @@
+{
+  "name": "Academic Reminder System with Google Sheets Integration",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "add-reminder",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "7948cde0-91ff-4a14-a129-9423445997b4",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        256,
+        304
+      ],
+      "webhookId": "bd5aad54-bc8a-4627-ba49-b7763d766a2a"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "18ZNRKMAAJcbyATHIdaPKGL-MOpIUshShkA0wTlmc8MU",
+          "mode": "list",
+          "cachedResultName": "Academic_reminder",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18ZNRKMAAJcbyATHIdaPKGL-MOpIUshShkA0wTlmc8MU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18ZNRKMAAJcbyATHIdaPKGL-MOpIUshShkA0wTlmc8MU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_email": "={{ $json.body.user_email }}",
+            "type": "={{ $json.body.type }}",
+            "date": "={{ $json.body.date }}",
+            "time": "={{ $json.body.time }}",
+            "reminder_sent": "No",
+            "title": "={{ $json.body.title }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "user_email",
+              "displayName": "user_email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "type",
+              "displayName": "type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "time",
+              "displayName": "time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reminder_sent",
+              "displayName": "reminder_sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "67583861-2d69-4d1d-bd7a-1029b45ef06f",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        480,
+        304
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "6ME5ozBGWneY46ak",
+          "name": "Google Sheets account 6"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"status\": \"success\",\n  \"message\": \"Reminder saved successfully\"\n}",
+        "options": {}
+      },
+      "id": "3f29931f-259c-4667-91ed-21197c4f6a44",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        784,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        208,
+        576
+      ],
+      "id": "76d882ae-66c3-471d-948e-cbe0b74be0d5",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "18ZNRKMAAJcbyATHIdaPKGL-MOpIUshShkA0wTlmc8MU",
+          "mode": "list",
+          "cachedResultName": "Academic_reminder",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18ZNRKMAAJcbyATHIdaPKGL-MOpIUshShkA0wTlmc8MU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18ZNRKMAAJcbyATHIdaPKGL-MOpIUshShkA0wTlmc8MU/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        416,
+        576
+      ],
+      "id": "38942b2f-8e77-4764-b51a-c6b03555970a",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "6ME5ozBGWneY46ak",
+          "name": "Google Sheets account 6"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const today = new Date();\nconst tomorrow = new Date();\ntomorrow.setDate(today.getDate() + 1);\n\n// Format to YYYY-MM-DD\nconst formatDate = (date) => {\n  return date.toISOString().split('T')[0];\n};\n\nconst tomorrowStr = formatDate(tomorrow);\n\nreturn items.filter(item => {\n  const eventDate = item.json.date;\n  const notSent = item.json.reminder_sent === \"No\";\n\n  return eventDate === tomorrowStr && notSent;\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        576
+      ],
+      "id": "e866b8eb-cbc4-4dea-a70b-4af86fd3c8c4",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Get row(s) in sheet').item.json.user_email }}",
+        "subject": "=Reminder: {{$json.title}} is Tomorrow",
+        "emailType": "text",
+        "message": "=Hello, \nThis is a reminder that you have {{$json.title}} tomorrow. \n📅 Date: {{$json.date}} \n⏰ Time: {{$json.time}} \n📌 Type: {{$json.type}} \n Please be prepared.Best of luck!",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        576
+      ],
+      "id": "6fa34f8b-1eaa-41d5-aa4f-3d80bafecaec",
+      "name": "Send a message",
+      "webhookId": "e9397d19-300a-49a0-a4a4-4086c9b4f637",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "QMWZ6QWCJ9Iyel3d",
+          "name": "Gmail account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "18ZNRKMAAJcbyATHIdaPKGL-MOpIUshShkA0wTlmc8MU",
+          "mode": "list",
+          "cachedResultName": "Academic_reminder",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18ZNRKMAAJcbyATHIdaPKGL-MOpIUshShkA0wTlmc8MU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18ZNRKMAAJcbyATHIdaPKGL-MOpIUshShkA0wTlmc8MU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Get row(s) in sheet').item.json.row_number }}",
+            "reminder_sent": "yes"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "user_email",
+              "displayName": "user_email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "type",
+              "displayName": "type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "time",
+              "displayName": "time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "reminder_sent",
+              "displayName": "reminder_sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1040,
+        576
+      ],
+      "id": "9cbbb86e-0f5a-4154-b958-b2e31c29a562",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "6ME5ozBGWneY46ak",
+          "name": "Google Sheets account 6"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "43841827-c3e3-4f24-91d1-61a344ea3741",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "849e24185b09e631de115a2ed51a64994c40df9fb98f2d9a7edb71e83af835ae"
+  },
+  "id": "hpJ8BgIsPMStbgXW",
+  "tags": []
+}
